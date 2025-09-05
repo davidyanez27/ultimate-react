@@ -42,10 +42,30 @@ export const RegisterForm = () => {
   const [formSubmitted, setFormSubmitted] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [isCheck, setIsCheck] = useState(false)
+  const [checkboxError, setCheckboxError] = useState(false)
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => { 
     event.preventDefault();
     setFormSubmitted(true);
+    
+    // Check if terms are agreed to
+    if (!isCheck) {
+      setCheckboxError(true);
+      return; // Don't submit if terms not agreed
+    }
+    
+    setCheckboxError(false);
+    
+    // Check if any form validation errors exist
+    if (usernameValid || firstNameValid || lastNameValid || emailValid || passwordValid) {
+      return; // Don't submit if there are validation errors
+    }
+    
+    // Check if all required fields are filled
+    if (!username.trim() || !firstName.trim() || !lastName.trim() || !email.trim() || !password.trim()) {
+      return; // Don't submit if required fields are empty
+    }
+    
     const user={
       username,
       firstName,
@@ -172,7 +192,7 @@ export const RegisterForm = () => {
                       placeholder="Enter your last name"
                       value={lastName}
                       onChange={onInputChange}
-                      error={!!lastNameValid && formSubmitted ? true : false}
+                      error={!!lastNameValid && formSubmitted}
                       hint={lastNameValid && formSubmitted ? lastNameValid : ""}
                     />
                   </div>
@@ -189,7 +209,7 @@ export const RegisterForm = () => {
                     placeholder="Enter your email"
                     value={email}
                     onChange={onInputChange}
-                    error={!!emailValid && formSubmitted ? true : false}
+                    error={!!emailValid && formSubmitted}
                     hint={!!emailValid && formSubmitted ? emailValid : ""}
                   />
                 </div>
@@ -206,7 +226,7 @@ export const RegisterForm = () => {
                       name="password"
                       value={password}
                       onChange={onInputChange}
-                      error={!!passwordValid && formSubmitted ? true : false}
+                      error={!!passwordValid && formSubmitted}
                       hint={!!passwordValid && formSubmitted ? passwordValid : ""}
                     />
                     <span
@@ -222,27 +242,38 @@ export const RegisterForm = () => {
                   </div>
                 </div>
                 {/* <!-- Checkbox --> */}
-                <div className="flex items-center gap-3">
-                  <Checkbox
-                    className="w-5 h-5"
-                    checked={isCheck}
-                    onChange={setIsCheck}
-                  />
-                  <p className="inline-block font-normal text-gray-500 dark:text-gray-400">
-                    By creating an account means you agree to the{" "}
-                    <span className="text-gray-800 dark:text-white/90">
-                      Terms and Conditions,
-                    </span>{" "}
-                    and our{" "}
-                    <span className="text-gray-800 dark:text-white">
-                      Privacy Policy
-                    </span>
-                  </p>
+                <div>
+                  <div className="flex items-center gap-3">
+                    <Checkbox
+                      className="w-5 h-5"
+                      checked={isCheck}
+                      onChange={(checked) => {
+                        setIsCheck(checked);
+                        if (checked) setCheckboxError(false);
+                      }}
+                    />
+                    <p className="inline-block font-normal text-gray-500 dark:text-gray-400">
+                      By creating an account means you agree to the{" "}
+                      <span className="text-gray-800 dark:text-white/90">
+                        Terms and Conditions,
+                      </span>{" "}
+                      and our{" "}
+                      <span className="text-gray-800 dark:text-white">
+                        Privacy Policy
+                      </span>
+                    </p>
+                  </div>
+                  {checkboxError && (
+                    <p className="mt-1.5 text-xs text-error-500">
+                      You must agree to the Terms and Conditions and Privacy Policy to continue
+                    </p>
+                  )}
                 </div>
                 {/* <!-- Button --> */}
                 <div>
-                  <button className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600"
-                    onClick={() => onSubmit}
+                  <button 
+                    type="submit"
+                    className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600"
                   >
                     Sign Up
                   </button>
@@ -260,7 +291,7 @@ export const RegisterForm = () => {
               <p className="text-sm font-normal text-center text-gray-700 dark:text-gray-400 sm:text-start">
                 Already have an account? {""}
                 <Link
-                  to="/signin"
+                  to="/auth/login"
                   className="text-brand-500 hover:text-brand-600 dark:text-brand-400"
                 >
                   Sign In

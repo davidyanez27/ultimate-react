@@ -58,7 +58,7 @@ export const AppSidebar = () => {
                   <HorizontaLDots className="size-6" />
                 )}
               </h2>
-              {MenuItems(navItems, "main")}
+              <MenuItems items={navItems} menuType="main" />
             </div>
 
           </div>

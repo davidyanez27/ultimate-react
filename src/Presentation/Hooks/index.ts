@@ -1,3 +1,5 @@
 export * from './useForm';
 export * from './useAppDispatch';
-export * from './useAuthStore';
+export * from './Store/useAuthStore';
+export * from './useModal';
+export * from './useUsers';

@@ -12,7 +12,7 @@ export const LoginForm = () => {
   }
   const formValidations = {
     email: [ (value:string) => regularExps.email.test(value), 'Please enter a valid email'],
-    password: [ (value:string) => regularExps.password.test(value), 'Please enter a password with lenght more than 8 characteres, use at least one capitalize letter and special character'],
+    password: [ (value:string) => value !== "", 'Please enter the password'],
   }
 
   const {email, password, onInputChange,  emailValid, passwordValid} = useForm(initialForm, formValidations)
@@ -23,9 +23,19 @@ export const LoginForm = () => {
   const [isCheck, setIsCheck] = useState(false)
 
   const onSubmit = (event: React.FormEvent<HTMLFormElement>)=>{
-    console.log(errorMessage)
     event.preventDefault();
     setFormSubmitted(true);
+    
+    // Check if any form validation errors exist
+    if (emailValid || passwordValid) {
+      return; // Don't submit if there are validation errors
+    }
+    
+    // Check if all required fields are filled
+    if (!email.trim() || !password.trim()) {
+      return; // Don't submit if required fields are empty
+    }
+    
     const user={email, password};
     startLogin(user);
 
@@ -131,12 +141,12 @@ export const LoginForm = () => {
                       name="password"
                       value={password}
                       onChange={onInputChange}
-                      error={!!passwordValid && formSubmitted ? true : false}
+                      error={!!passwordValid && formSubmitted}
                       hint={!!passwordValid && formSubmitted ? passwordValid : ""}
                     />
                     <span
                       onClick={()=>setShowPassword(!showPassword)}
-                      className={`absolute z-30 ${!!passwordValid && formSubmitted ? "-translate-y-7" : "-translate-y-1/2"} cursor-pointer right-4 top-1/2`}
+                      className={`absolute z-30 ${!!passwordValid && formSubmitted ? "-translate-y-5" : "-translate-y-1/2"} cursor-pointer right-4 top-1/2`}
                     >
                       {showPassword?(<EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" />
                       ):(
@@ -155,7 +165,10 @@ export const LoginForm = () => {
                   </Link>
                 </div>
                 <div>
-                  <Button className="w-full" size="sm" onClick={()=> onSubmit}>
+                  <Button 
+                    className="w-full" 
+                    size="sm"
+                  >
                     Sign In
                   </Button>
                 </div>

@@ -258,9 +258,15 @@ layer(base);
 
 @utility header-item-icon-size {
   & svg {
-    @apply !size-7;
+    @apply !size-10;
   }
 }
+
+@utility icon-2em { @apply !w-[2em] !h-[2em]; }
+@utility icon-1.5em { @apply !w-[1.25em] !h-[1.25em]; }
+@utility icon-1em { @apply !w-[1em] !h-[1em]; }
+
+
 
 @utility no-scrollbar {
   /* Chrome, Safari and Opera */

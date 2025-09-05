@@ -1,9 +1,14 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
 interface User {
+  uuid?: string;
   username?: string;
-  name?: string;
+  firstName?: string;
+  lastName?: string;
   email?: string;
+  roleId?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 interface AuthState {
@@ -40,12 +45,12 @@ export const authSlice = createSlice({
     clearErrorMessage: (state) => {
       state.errorMessage = undefined;
     },
-    setUser: (state, action) => {
+    setUser: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
       state.status = "authenticated";
     },
   },
 });
 
-export const { onChecking, onLogin, onLogout, clearErrorMessage } =
+export const { onChecking, onLogin, onLogout, clearErrorMessage, setUser } =
   authSlice.actions;

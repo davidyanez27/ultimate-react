@@ -1,8 +1,9 @@
 import { useDispatch } from 'react-redux';
-import { clearErrorMessage, onChecking, onLogin, onLogout } from '../Store';
-import { InventoryBackend } from '../Api/Index';
-import { useAppSelector } from './';
-import type { SignInFormDataInterface, SignUpFormDataInterface } from '../../Interface/interfaces';
+import { clearErrorMessage, onChecking, onLogin, onLogout } from '../../Store';
+import { InventoryBackend } from '../../Api/Index';
+import { useAppSelector } from '..';
+import { Jwt } from '../../../config';
+import type { SignInFormDataInterface, SignUpFormDataInterface } from '../../../Interface/interfaces';
 import type { AxiosError } from 'axios';
 
 
@@ -10,6 +11,14 @@ export const useAuthStore = () => {
 
     const { status, user, errorMessage } = useAppSelector( state => state.auth );
     const dispatch = useDispatch();
+ 
+    const isValidToken = (token: string) => {
+        if (!token) return dispatch( onLogout() );
+        if (Jwt.isTokenExpired(token)) {
+            localStorage.clear();
+            dispatch(onLogout());
+        }
+    };
 
     const startLogin = async({ email, password }:SignInFormDataInterface) => {
         dispatch( onChecking() );
@@ -17,11 +26,10 @@ export const useAuthStore = () => {
             const { data } = await InventoryBackend.post('/auth/login',{ email, password });
             localStorage.setItem('token', data.token );
             localStorage.setItem("token-init-date", new Date().getTime().toString());
-            dispatch( onLogin({ username: data.user.username, email: data.user.email }) );
+            dispatch( onLogin({ ...data.user }) );
             
         } catch (error: unknown) {
             const err = error as AxiosError<any>
-            console.log(err.response?.data.error)
             dispatch( onLogout(err.response?.data.error));
             setTimeout(() => {
                 dispatch( clearErrorMessage() );
@@ -39,7 +47,6 @@ export const useAuthStore = () => {
             
         } catch (error: unknown) {
             const err = error as AxiosError<any>
-            console.log(err.response?.data.error)
             dispatch( onLogout(err.response?.data.error));
             setTimeout(() => {
                 dispatch( clearErrorMessage() );
@@ -86,6 +93,7 @@ export const useAuthStore = () => {
     const checkAuthToken = async() => {
         const token = localStorage.getItem('token');
         if ( !token ) return dispatch( onLogout() );
+        if (Jwt.isTokenExpired(token)) return startLogout();
 
         try {
             const { data } = await InventoryBackend.get('auth/renew',{
@@ -93,14 +101,22 @@ export const useAuthStore = () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
-            console.log(data)
+            
+            if (!isValidToken(data.token)) return dispatch( onLogout() );
+            
             localStorage.setItem('token', data.token );
             localStorage.setItem("token-init-date", new Date().getTime().toString());
 
-            dispatch( onLogin({ username: "shalaka" }) );
+            // Decode token to get user info
+            const decodedToken = Jwt.decodeToken<{username: string, email: string}>(data.token);
+            if (decodedToken) {
+                dispatch( onLogin({ username: decodedToken.username, email: decodedToken.email }) );
+            } else {
+                localStorage.clear();
+                dispatch( onLogout() );
+            }
 
         } catch (error) {
-            console.log(error)
             localStorage.clear();
             dispatch( onLogout() );
         }
@@ -113,6 +129,40 @@ export const useAuthStore = () => {
     const startLogout = () => {
         localStorage.clear();
         dispatch(onLogout());
+    }
+
+    const getAllUsers = async(page: number = 1, limit: number = 10) => {
+        const token = localStorage.getItem('token');
+        if (!isValidToken(token!)) return null;
+
+        try {
+            const { data } = await InventoryBackend.get(`/api/users/findAll?page=${page}&limit=${limit}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            return data;
+        } catch (error) {
+            const err = error as AxiosError<any>;
+            throw err.response?.data.error || 'Error fetching users';
+        }
+    }
+
+    const getUserById = async(uuid: string) => {
+        const token = localStorage.getItem('token');
+        if (!isValidToken(token!)) return null;
+
+        try {
+            const { data } = await InventoryBackend.get(`/users/find/${uuid}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            return data;
+        } catch (error) {
+            const err = error as AxiosError<any>;
+            throw err.response?.data.error || 'Error fetching user';
+        }
     }
 
 
@@ -130,7 +180,9 @@ export const useAuthStore = () => {
         startLogout,
         getAuthUrl,
         oauthLogin,
-        OAuth2Login
+        OAuth2Login,
+        getAllUsers,
+        getUserById
     }
 
 }

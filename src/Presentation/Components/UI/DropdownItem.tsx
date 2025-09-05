@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-import type { DropdownItemProps } from "../../../../Interface/interfaces"
+import type { DropdownItemProps } from "../../../Interface/interfaces";
 
 export const DropdownItem = ({
   tag = "button",

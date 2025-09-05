@@ -11,6 +11,15 @@ import { ReactComponent as DocsIcon } from "./docs.svg?react";
 import { ReactComponent as TimeIcon } from "./time.svg?react";
 import { ReactComponent as TableIcon } from "./table.svg?react";
 import { ReactComponent as UserIcon } from "./user-line.svg?react";
+import { ReactComponent as CheckCircleIcon } from "./check-circle.svg?react";
+import { ReactComponent as PencilIcon } from "./pencil.svg?react";
+import { ReactComponent as LockIcon } from "./lock.svg?react";
+import { ReactComponent as Building } from "./building.svg?react";
+import { ReactComponent as SecurityIcon } from "./security.svg?react";
+import { ReactComponent as GroupIcon } from "./group.svg?react";
+
+
+
 
 
 
@@ -30,5 +39,11 @@ export {
     DocsIcon,
     TimeIcon,
     TableIcon,
-    UserIcon
+    UserIcon,
+    CheckCircleIcon,
+    PencilIcon,
+    LockIcon,
+    Building,
+    SecurityIcon,
+    GroupIcon
 }

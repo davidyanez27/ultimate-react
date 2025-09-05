@@ -9,17 +9,32 @@ export const navItems: NavItem[] = [
     name: "Dashboard",
     subItems: [{ name: "Projects", path: "/", pro: false }],
   },
-  // {
-  //   icon: <CalenderIcon />,
-  //   name: "Calendar",
-  //   path: "/calendar",
-  // },
+  {
+    icon: <UserCircleIcon />,
+    name: "Users",
+    subItems: [
+      { name: "My Profile", path: "/user/profile", pro: false },
+      { name: "Create Users", path: "/user/create", pro: false },
+      { name: "My Company", path: "/user/company", pro: false },
+    ]
+
+  },
   {
     icon: <TableIcon />,
     name: "Item Management",
     subItems: [
-      { name: "Add/Edit/Delete Items", path: "/profile", pro: false },
-      { name: "Item categorization", path: "/user/create", pro: false },
+      { 
+        name: "Add/Edit/Delete Items", 
+        path: "/items", 
+        pro: false,
+        subItems: [
+          { name: "Add New Item", path: "/items/add", pro: false },
+          { name: "Edit Existing Items", path: "/items/edit", pro: false },
+          { name: "Delete Items", path: "/items/delete", pro: false },
+          { name: "Bulk Operations", path: "/items/bulk", pro: true },
+        ]
+      },
+      { name: "Item categorization", path: "/user/", pro: false },
       { name: "Barcodes or QR codes for each item", path: "/users", pro: false },
       { name: "Low-stock alerts", path: "/users", pro: false },
     ]
@@ -29,7 +44,7 @@ export const navItems: NavItem[] = [
     name: "Inventory Tracking",
     subItems: [
       { name: "Real-time quantity tracking", path: "/profile", pro: false },
-      { name: "Batch numbers and expiration dates", path: "/user/create", pro: false },
+      { name: "Batch numbers and expiration dates", path: "/user", pro: false },
       { name: "Stock in/out logs", path: "/users", pro: false },
       { name: "Location-based stock", path: "/users", pro: false },
 
@@ -40,7 +55,7 @@ export const navItems: NavItem[] = [
     name: "Suppliers & Vendors",
     subItems: [
       { name: "Add/manage supplier profiles", path: "/profile", pro: false },
-      { name: "Associate items with suppliers", path: "/user/create", pro: false },
+      { name: "Associate items with suppliers", path: "/user", pro: false },
       { name: "Purchase orders", path: "/users", pro: false },
     ]
   },
@@ -49,7 +64,7 @@ export const navItems: NavItem[] = [
     name: "Reports & Analytics",
     subItems: [
       { name: "Stock level reports", path: "/profile", pro: false },
-      { name: "Inventory value", path: "/user/create", pro: false },
+      { name: "Inventory value", path: "/user", pro: false },
       { name: "Movement trends", path: "/users", pro: false },
       { name: "Export to PDF/Excel", path: "/users", pro: false },
     ]
@@ -63,8 +78,8 @@ export const othersItems: NavItem[] = [
     name: "Users",
     subItems: [
       { name: "My Profile", path: "/profile", pro: false },
-      { name: "Create User", path: "/user/create", pro: false },
-      { name: "My Company", path: "/users", pro: false },
+      { name: "Create User", path: "/user", pro: false },
+      { name: "My Company", path: "/company", pro: false },
     ]
   },
 ];

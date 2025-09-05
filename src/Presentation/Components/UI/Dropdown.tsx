@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react"
-import type { DropdownProps } from "../../../../Interface/interfaces"
+import type { DropdownProps } from "../../../Interface/interfaces";
 
 export const Dropdown = ({isOpen, onClose, children, className}:DropdownProps) => {
 

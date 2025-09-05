@@ -4,4 +4,6 @@ export * from './Auth/RegisterPage';
 export * from './Dashboard/DashboardPage';
 export * from './Dashboard/HomePage';
 
-export * from './Users/ProfilePage';
+export * from './Users/UserProfiles';
+export * from './Users/MyCompanyPage';
+export * from '../Components/UserProfile/CreateUserForm';

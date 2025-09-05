@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router"
 
-import { DashboardPage, HomePage, LoginPage, ProfilePage, RegisterPage } from "../Pages";
+import { CreateUserForm, HomePage, LoginPage, MyCompanyPage, UserProfiles , RegisterPage } from "../Pages";
 import { useEffect } from "react";
 import { useAuthStore } from "../Hooks";
 import { AppLayout } from "../Layouts";
@@ -14,7 +14,7 @@ export const AppRouter = () => {
 
   return (
     <Routes>
-      {status === "authenticated" ? (
+      {status === "not-authenticated" ? (
         <>
           <Route path="/auth/login" element={<LoginPage />} />
           <Route path="/auth/register" element={<RegisterPage />} />
@@ -27,7 +27,10 @@ export const AppRouter = () => {
               <Route index path="/" element={<HomePage />} />
 
               {/* Others Page */}
-              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/user/profile" element={<UserProfiles />} />
+              <Route path="/user/create" element={<CreateUserForm />} />
+              <Route path="/user/company" element={<MyCompanyPage />} />
+
             </Route>
 
           <Route path="/*" element={<Navigate to="/" />} />
