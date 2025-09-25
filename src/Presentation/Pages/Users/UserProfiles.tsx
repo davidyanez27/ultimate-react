@@ -1,8 +1,6 @@
 
-
 import { PageBreadcrumb } from "../../Components";
-import { UserInfoCard } from "../../Components/UserProfile";
-import UserMetaCard from "../../Components/UserProfile/UserMetaCard";
+import { UserAddressCard, UserInfoCard, UserMetaCard  } from "../../Components/UserProfile";
 
 export const UserProfiles= () => {
   return (
@@ -14,6 +12,8 @@ export const UserProfiles= () => {
         <div className="space-y-6">
           <UserMetaCard />
           <UserInfoCard />
+          <UserAddressCard/>
+
         </div>
       </div>
     </>

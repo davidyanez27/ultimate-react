@@ -1,91 +1,24 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import type { 
+  UserDto, 
+} from '@inventory/shared-types';
 import { PageBreadcrumb, CompanyStats, UserFilters, UsersList } from "../../Components";
-import { useUsers } from "../../Hooks";
+import { useUsersStore } from "../../Hooks";
 
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string;
-  department: string;
-  isActive: boolean;
-  joinedDate: string;
-  avatar?: string;
-}
 
-const mockUsers: User[] = [
-  {
-    id: 1,
-    firstName: "John",
-    lastName: "Doe",
-    email: "john.doe@company.com",
-    role: "Administrator",
-    department: "Engineering",
-    isActive: true,
-    joinedDate: "2023-01-15",
-  },
-  {
-    id: 2,
-    firstName: "Jane",
-    lastName: "Smith",
-    email: "jane.smith@company.com",
-    role: "Manager",
-    department: "Marketing",
-    isActive: true,
-    joinedDate: "2023-02-20",
-  },
-  {
-    id: 3,
-    firstName: "Mike",
-    lastName: "Johnson",
-    email: "mike.johnson@company.com",
-    role: "Employee",
-    department: "Sales",
-    isActive: false,
-    joinedDate: "2023-03-10",
-  },
-  {
-    id: 4,
-    firstName: "Sarah",
-    lastName: "Wilson",
-    email: "sarah.wilson@company.com",
-    role: "Manager",
-    department: "Human Resources",
-    isActive: true,
-    joinedDate: "2023-01-05",
-  },
-  {
-    id: 5,
-    firstName: "David",
-    lastName: "Brown",
-    email: "david.brown@company.com",
-    role: "Employee",
-    department: "Finance",
-    isActive: true,
-    joinedDate: "2023-04-12",
-  },
-  {
-    id: 6,
-    firstName: "Emily",
-    lastName: "Davis",
-    email: "emily.davis@company.com",
-    role: "Employee",
-    department: "Operations",
-    isActive: true,
-    joinedDate: "2023-03-28",
-  }
-];
 
 export const MyCompanyPage = () => {
-  const { users: apiUsers, loading, error } = useUsers(1, 50);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterRole, setFilterRole] = useState("All");
-  const [filterDepartment, setFilterDepartment] = useState("All");
-  const [filterStatus, setFilterStatus] = useState("All");
+  const { users, loading, errorMessage, startFetchUsers, filters, updateUsersFilters, clearError } = useUsersStore();
+  
+  // Local state for any additional UI needs
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
-  // Use API data or fallback to empty array
-  const users = apiUsers || [];
+  useEffect(() => {
+    startFetchUsers(1, 10);
+  }, []);
+
+  // Use filters from store
+  const { searchTerm, role: filterRole, department: filterDepartment, status: filterStatus } = filters;
 
   // Get unique roles and departments for filters
   const roles = Array.from(new Set(users.map(user => user.role).filter(Boolean)));
@@ -107,15 +40,18 @@ export const MyCompanyPage = () => {
   });
 
 
-  const handleEditUser = (user: User) => {
-    console.log("Edit user:", user);
+  const handleEditUser = (user: UserDto) => {
+    setFormSubmitted(true);
     // TODO: Navigate to edit user page or open edit modal
+    console.log('Editing user:', user.uuid || user.id);
   };
 
-  const handleViewUser = (user: User) => {
-    console.log("View user:", user);
-    // TODO: Navigate to user profile page or open view modal
+  const handleViewUser = (user: UserDto) => {
+    setFormSubmitted(true);
+    // TODO: Navigate to user profile page or open view modal  
+    console.log('Viewing user:', user.uuid || user.id);
   };
+
 
   if (loading) {
     return (
@@ -136,18 +72,6 @@ export const MyCompanyPage = () => {
     );
   }
 
-  if (error) {
-    return (
-      <>
-        <PageBreadcrumb pageTitle="My Company" />
-        <div className="p-6">
-          <div className="text-red-600 dark:text-red-400">
-            Error loading company data: {error}
-          </div>
-        </div>
-      </>
-    );
-  }
 
   return (
     <>
@@ -158,13 +82,13 @@ export const MyCompanyPage = () => {
 
         <UserFilters
           searchTerm={searchTerm}
-          setSearchTerm={setSearchTerm}
+          setSearchTerm={(value) => updateUsersFilters({ searchTerm: value })}
           filterRole={filterRole}
-          setFilterRole={setFilterRole}
+          setFilterRole={(value) => updateUsersFilters({ role: value })}
           filterDepartment={filterDepartment}
-          setFilterDepartment={setFilterDepartment}
+          setFilterDepartment={(value) => updateUsersFilters({ department: value })}
           filterStatus={filterStatus}
-          setFilterStatus={setFilterStatus}
+          setFilterStatus={(value) => updateUsersFilters({ status: value })}
           roles={roles}
           departments={departments}
         />
@@ -175,6 +99,19 @@ export const MyCompanyPage = () => {
           onViewUser={handleViewUser}
         />
       </div>
+      
+      {errorMessage && 
+        <div className="bg-red-100 border border-red-400 text-red-500 px-4 py-3 rounded relative mt-5 text-center" role="alert">
+          <span className="block sm:inline">{errorMessage}</span>
+          <button 
+            onClick={clearError} 
+            className="ml-2 text-red-700 hover:text-red-900"
+          >
+            ×
+          </button>
+        </div>
+      }
+
     </>
   );
 };

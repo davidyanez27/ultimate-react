@@ -12,6 +12,8 @@ export const CreateUserForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formSubmitted, setFormSubmitted] = useState(false);
 
+  
+
   const initialForm = {
     firstName: "",
     lastName: "",
@@ -85,7 +87,26 @@ export const CreateUserForm = () => {
     // Additional validation for password match
     if (password !== confirmPassword) {
       console.log("Passwords do not match");
-      return;
+
+      // Check if any form validation errors exist
+    if (usernameValid || firstNameValid || lastNameValid || emailValid || passwordValid) {
+      return; // Don't submit if there are validation errors
+    }
+    
+    // Check if all required fields are filled
+    if (!username.trim() || !firstName.trim() || !lastName.trim() || !email.trim() || !password.trim()) {
+      return; // Don't submit if required fields are empty
+    }
+    
+    const user={
+      username,
+      firstName,
+      lastName,
+      email,
+      password,
+    }
+ 
+
     }
     
     // Create user object with form data

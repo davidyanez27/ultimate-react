@@ -2,10 +2,13 @@ import { useState } from "react";
 import { Link } from "react-router";
 import { Dropdown, DropdownItem } from "../UI";
 import { UserIcon } from "../../Assets/icons";
+import { useAuthStore } from "../../Hooks";
 
 
 export const UserDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const {startLogout, errorMessage} = useAuthStore();
+  
 
   function toggleDropdown() {
     setIsOpen(!isOpen);
@@ -21,7 +24,7 @@ export const UserDropdown = () => {
         className="relative flex text-gray-500 transition-colors bg-white border border-gray-200 rounded-full hover:text-dark-900 h-11 w-11 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-800 dark:bg-gray-900 dark:text-gray-400 dark:hover:bg-gray-800 dark:hover:text-white"
       >
         <span className="menu-item header-item-icon-size group overflow-hidden rounded-full border-gray-100 ">
-          <UserIcon className=""/>
+          <UserIcon className="" />
         </span>
       </button>
 
@@ -41,7 +44,7 @@ export const UserDropdown = () => {
             <DropdownItem
               onItemClick={closeDropdown}
               tag="a"
-              to="/profile"
+              to="/user/profile"
               className="flex items-center gap-3 px-3 py-2 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
             >
               <svg
@@ -114,7 +117,12 @@ export const UserDropdown = () => {
           </li>
         </ul>
         <Link
-          to="/signin"
+
+          onClick={(e) => {
+            e.preventDefault(); 
+            startLogout();
+          }}
+          to="/auth/signin"
           className="flex items-center gap-3 px-3 py-2 mt-3 font-medium text-gray-700 rounded-lg group text-theme-sm hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300"
         >
           <svg

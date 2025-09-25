@@ -1,16 +1,7 @@
 import { CheckCircleIcon, GroupIcon, SecurityIcon, UserCircleIcon } from "../../Assets/icons";
+import type { User } from "../../Store";
 
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string;
-  department: string;
-  isActive: boolean;
-  joinedDate: string;
-  avatar?: string;
-}
+
 
 interface CompanyStatsProps {
   users: User[];

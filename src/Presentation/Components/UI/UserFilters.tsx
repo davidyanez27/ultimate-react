@@ -1,3 +1,6 @@
+import type { IPaginationQuery } from '@inventory/shared-types';
+
+// Filter interface extending shared pagination query for consistency
 interface UserFiltersProps {
   searchTerm: string;
   setSearchTerm: (value: string) => void;
@@ -10,6 +13,13 @@ interface UserFiltersProps {
   roles: string[];
   departments: string[];
 }
+
+// Filter state type compatible with shared pagination query
+type UserFilterState = Pick<IPaginationQuery, 'search'> & {
+  role: string;
+  department: string;
+  status: string;
+};
 
 export const UserFilters = ({
   searchTerm,

@@ -17,6 +17,13 @@ import { ReactComponent as LockIcon } from "./lock.svg?react";
 import { ReactComponent as Building } from "./building.svg?react";
 import { ReactComponent as SecurityIcon } from "./security.svg?react";
 import { ReactComponent as GroupIcon } from "./group.svg?react";
+import { ReactComponent as SunIcon } from "./sun.svg?react";
+import { ReactComponent as MoonIcon } from "./moon.svg?react";
+import { ReactComponent as LoadingSpinnerIcon } from "./loading-spinner.svg?react";
+import { ReactComponent as GoogleIcon } from "./google.svg?react";
+import { ReactComponent as XTwitterIcon } from "./x-twitter.svg?react";
+
+
 
 
 
@@ -45,5 +52,10 @@ export {
     LockIcon,
     Building,
     SecurityIcon,
-    GroupIcon
+    GroupIcon,
+    SunIcon,
+    MoonIcon,
+    LoadingSpinnerIcon,
+    GoogleIcon,
+    XTwitterIcon
 }

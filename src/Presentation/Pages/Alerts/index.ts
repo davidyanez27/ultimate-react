@@ -1,0 +1,1 @@
+export { LowStockAlertsPage } from "./LowStockAlertsPage";

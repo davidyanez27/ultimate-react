@@ -7,7 +7,11 @@ export const navItems: NavItem[] = [
   {
     icon: <GridIcon />,
     name: "Dashboard",
-    subItems: [{ name: "Projects", path: "/", pro: false }],
+    subItems: [
+      { name: "Dashboard", path: "/", pro: false },
+      { name: "Projects", path: "/projects", pro: false }
+
+    ],
   },
   {
     icon: <UserCircleIcon />,
@@ -24,19 +28,19 @@ export const navItems: NavItem[] = [
     name: "Item Management",
     subItems: [
       { 
-        name: "Add/Edit/Delete Items", 
+        name: "Items Management", 
         path: "/items", 
         pro: false,
-        subItems: [
-          { name: "Add New Item", path: "/items/add", pro: false },
-          { name: "Edit Existing Items", path: "/items/edit", pro: false },
-          { name: "Delete Items", path: "/items/delete", pro: false },
-          { name: "Bulk Operations", path: "/items/bulk", pro: true },
-        ]
+      //   subItems: [
+      //     { name: "Add New Item", path: "/items/add", pro: false },
+      //     { name: "Edit Existing Items", path: "/items/edit", pro: false },
+      //     { name: "Delete Items", path: "/items/delete", pro: false },
+      //     { name: "Bulk Operations", path: "/items/bulk", pro: true },
+      //   ]
       },
-      { name: "Item categorization", path: "/user/", pro: false },
-      { name: "Barcodes or QR codes for each item", path: "/users", pro: false },
-      { name: "Low-stock alerts", path: "/users", pro: false },
+      { name: "Item categorization", path: "/categories", pro: false },
+      { name: "Barcodes or QR codes for each item", path: "/stock/barcodes", pro: false },
+      { name: "Low-stock alerts", path: "/stock/alerts", pro: false },
     ]
   },
   {
@@ -54,9 +58,9 @@ export const navItems: NavItem[] = [
     icon: <BoxCubeIcon />,
     name: "Suppliers & Vendors",
     subItems: [
-      { name: "Add/manage supplier profiles", path: "/profile", pro: false },
-      { name: "Associate items with suppliers", path: "/user", pro: false },
-      { name: "Purchase orders", path: "/users", pro: false },
+      { name: "Add/manage supplier profiles", path: "/suppliers", pro: false },
+      { name: "Associate items with suppliers", path: "/suppliers/items", pro: false },
+      { name: "Purchase orders", path: "/suppliers/purchase-orders", pro: false },
     ]
   },
   {

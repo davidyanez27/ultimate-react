@@ -1,22 +1,15 @@
+import type { UserDto, FindAllUsersResponseInterface } from '@inventory/shared-types';
 import { UserCard } from "./UserCard";
 
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string;
-  department: string;
-  isActive: boolean;
-  joinedDate: string;
-  avatar?: string;
+// Props interface using shared types for consistency
+interface UsersListProps {
+  users: UserDto[]; // Frontend User type (extends backend UserDto)
+  onEditUser?: (user: UserDto) => void;
+  onViewUser?: (user: UserDto) => void;
 }
 
-interface UsersListProps {
-  users: User[];
-  onEditUser?: (user: User) => void;
-  onViewUser?: (user: User) => void;
-}
+// Type alias for API response compatibility
+type UsersApiResponse = FindAllUsersResponseInterface;
 
 export const UsersList = ({ users, onEditUser, onViewUser }: UsersListProps) => {
   return (
@@ -33,7 +26,7 @@ export const UsersList = ({ users, onEditUser, onViewUser }: UsersListProps) => 
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
         {users.map((user) => (
           <UserCard 
-            key={user.id} 
+            key={user.uuid} 
             user={user}
             onEdit={onEditUser}
             onView={onViewUser}

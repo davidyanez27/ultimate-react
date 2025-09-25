@@ -1,22 +1,15 @@
 import { PencilIcon, UserIcon } from "../../Assets/icons";
+import type { UserDto } from '@inventory/shared-types';
 
-interface User {
-  id: number;
-  firstName: string;
-  lastName: string;
-  email: string;
-  role: string;
-  department: string;
-  isActive: boolean;
-  joinedDate: string;
-  avatar?: string;
-}
-
+// Props interface with shared types for consistency
 interface UserCardProps {
-  user: User;
-  onEdit?: (user: User) => void;
-  onView?: (user: User) => void;
+  user: UserDto; // Frontend User type (extends backend UserDto)
+  onEdit?: (user: UserDto) => void;
+  onView?: (user: UserDto) => void;
 }
+
+// Helper type for backend DTO mapping
+type BackendUserDto = UserDto;
 
 export const UserCard = ({ user, onEdit, onView }: UserCardProps) => {
   const getInitials = (firstName: string, lastName: string) => {
@@ -36,7 +29,7 @@ export const UserCard = ({ user, onEdit, onView }: UserCardProps) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-brand-400 to-brand-600 text-white font-medium">
-            {getInitials(user.firstName, user.lastName)}
+            {getInitials(user.firstName!, user.lastName!)}
           </div>
           
           <div className="min-w-0 flex-1">
@@ -74,7 +67,7 @@ export const UserCard = ({ user, onEdit, onView }: UserCardProps) => {
                 <svg className="mr-1.5 h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
                 </svg>
-                Joined {formatDate(user.joinedDate)}
+                Joined {user.createdAt}
               </span>
             </div>
           </div>

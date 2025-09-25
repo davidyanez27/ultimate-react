@@ -1,0 +1,1 @@
+export { BarcodeManagementPage } from "./BarcodeManagementPage";

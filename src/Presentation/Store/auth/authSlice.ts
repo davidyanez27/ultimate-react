@@ -1,25 +1,17 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-
-interface User {
-  uuid?: string;
-  username?: string;
-  firstName?: string;
-  lastName?: string;
-  email?: string;
-  roleId?: number;
-  createdAt?: string;
-  updatedAt?: string;
-}
+import type { 
+  UserDto
+} from '@inventory/shared-types';
 
 interface AuthState {
   status: "checking" | "authenticated" | "not-authenticated";
-  user: User;
+  user: UserDto; 
   errorMessage?: string;
 }
 
 const initialState: AuthState = {
-  status: "checking",
-  user: {},
+  status: "checking", 
+  user: {} as UserDto, 
   errorMessage: undefined,
 };
 
@@ -29,23 +21,23 @@ export const authSlice = createSlice({
   reducers: {
     onChecking: (state) => {
       state.status = "checking";
-      state.user = {};
+      state.user = {} as UserDto;
       state.errorMessage = undefined;
     },
-    onLogin: (state, action: PayloadAction<User>) => {
+    onLogin: (state, action: PayloadAction<UserDto>) => {
       state.status = "authenticated";
       state.user = action.payload;
       state.errorMessage = undefined;
     },
     onLogout: (state, action: PayloadAction<string | undefined>) => {
       state.status = "not-authenticated";
-      state.user = {};
+      state.user = {} as UserDto;
       state.errorMessage = action.payload;
     },
     clearErrorMessage: (state) => {
       state.errorMessage = undefined;
     },
-    setUser: (state, action: PayloadAction<User>) => {
+    setUser: (state, action: PayloadAction<UserDto>) => {
       state.user = action.payload;
       state.status = "authenticated";
     },
